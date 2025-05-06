@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Απάντηση Ερωτηματολογίου{% endblock %}
+
+{% block content %}
+<h2>Απάντησε το Ερωτηματολόγιο ID: {{ id }}</h2>
+
+<form method="POST" action="/user/questionnaire/{{ id }}">
+  <p>Ερώτηση 1: Πόσο ικανοποιημένος/η είσαι από το μάθημα;</p>
+  <select name="q1">
+    <option>Πολύ</option>
+    <option>Αρκετά</option>
+    <option>Λίγο</option>
+    <option>Καθόλου</option>
+  </select>
+
+  <br><br>
+  <button type="submit">Υποβολή</button>
+</form>
+{% endblock %}

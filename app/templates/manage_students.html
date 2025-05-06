@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Διαχείριση Φοιτητών{% endblock %}
+
+{% block content %}
+<h2>Λίστα Φοιτητών</h2>
+<ul>
+  <li>2021001 - Γιάννης Παπαδόπουλος <a href="/admin/delete-student/2021001">Διαγραφή</a></li>
+  <li>2021002 - Μαρία Νικολάου <a href="/admin/delete-student/2021002">Διαγραφή</a></li>
+  <li>2021003 - Δημήτρης Κωνσταντίνου <a href="/admin/delete-student/2021003">Διαγραφή</a></li>
+</ul>
+
+<a href="/admin/create-student">Προσθήκη Νέου Φοιτητή</a>
+{% endblock %}

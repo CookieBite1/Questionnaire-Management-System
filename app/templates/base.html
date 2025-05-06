@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}UniQ{% endblock %}</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    nav a { margin: 0 10px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Σύστημα Ερωτηματολογίων ΠαΠει</h1>
+    <nav>
+      <a href="/user/">Αρχική</a> |
+      <a href="/user/questionnaires">Ερωτηματολόγια</a> |
+      <a href="/student/login">Login Φοιτητή</a> |
+      <a href="/admin/manage-students">Διαχείριση Φοιτητών</a>
+    </nav>
+  </header>
+
+  <hr>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <hr>
+    <p>© 2025 Πανεπιστήμιο Πειραιώς</p>
+  </footer>
+
+</body>
+</html>

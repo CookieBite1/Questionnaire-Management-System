@@ -31,7 +31,7 @@ def create_questionnaire_view():
         title = request.form['title']
         description = request.form['description']
         questions = []
-        for i in range(1, 6):  # Έως 5 ερωτήσεις ως παράδειγμα
+        for i in range(1, 6):  
             q_text = request.form.get(f'q{i}')
             if q_text:
                 questions.append({
