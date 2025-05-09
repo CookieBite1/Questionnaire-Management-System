@@ -11,7 +11,7 @@ app = create_app()
 
 if __name__ == '__main__':
     cur_path = os.getcwd()
-    working_dir = Path(cur_path).parent / 'app' / 'data_files'
+    working_dir = Path(cur_path) / 'app' / 'data_files'
     print(working_dir)
     with app.app_context():
         students_path = working_dir / 'students.json'

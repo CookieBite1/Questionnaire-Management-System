@@ -4,39 +4,38 @@
 
 {% block content %}
 <h2>Λίστα Φοιτητών</h2>
-<body>
-  <table border="1">
-    <thead>
-        <tr>
-            <th>Αριθμός Μητρώου</th>
-            <th>Όνομα</th>
-            <th>Email</th>
-            <th>Έτος Γέννησης</th>
-            <th>Διεύθυνση</th>
-        </tr>
-    </thead>
-    <tbody>
-      {% for student in students %}
-      <tr>
-        <td>{{ student.reg_number }}</td>
-        <td>{{ student.name }}</td>
-        <td>{{ student.email }}</td>
-        <td>{{ student.yearOfBirth }}</td>
-        <td>
-          {% if student.address %}
-            {{ student.address.street }}, {{ student.address.city }} {{ student.address.postcode }}
-          {% else %}
-            -
-          {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-    
+
+<table border="1" cellpadding="5" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Όνομα</th>
+      <th>Email</th>
+      <th>Έτος Γέννησης</th>
+      <th>Διεύθυνση</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for student in students %}
+    <tr>
+      <td>{{ student.name }}</td>
+      <td>{{ student.email }}</td>
+      <td>
+        {% if student.yearOfBirth['$numberInt'] %}
+          {{ student.yearOfBirth['$numberInt'] }}
+        {% else %}
+          -
+        {% endif %}
+      </td>
+      <td>
+        {% if student.address %}
+          {{ student.address[0].street }}, {{ student.address[0].city }} {{ student.address[0].postcode['$numberInt'] }}
+        {% else %}
+          -
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
 </table>
-
-
-</body>
-
 
 {% endblock %}

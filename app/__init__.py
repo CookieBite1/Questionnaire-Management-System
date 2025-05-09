@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_pymongo import PyMongo
 
+import os 
+
 mongo = PyMongo()
 
 def create_app():
@@ -10,7 +12,8 @@ def create_app():
     app.secret_key = 'supersecretkey123' 
 
     # --- MongoDB Config ---
-    app.config["MONGO_URI"] = "mongodb://localhost:27017/UniQ"
+    mongo_host = os.getenv('MONGO_HOST', 'localhost')  # Default = localhost if not exists
+    app.config["MONGO_URI"] = f"mongodb://{mongo_host}:27017/UniQ"
     mongo.init_app(app)
 
     # --- Blueprints ---
