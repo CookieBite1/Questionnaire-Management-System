@@ -10,7 +10,7 @@ def create_app():
     app.secret_key = 'supersecretkey123' 
 
     # --- MongoDB Config ---
-    app.config["MONGO_URI"] = "mongodb://mongo:27017/UniQ"
+    app.config["MONGO_URI"] = "mongodb://localhost:27017/UniQ"
     mongo.init_app(app)
 
     # --- Blueprints ---

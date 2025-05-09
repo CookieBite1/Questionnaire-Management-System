@@ -1,0 +1,31 @@
+[
+    {
+      "questionnaire_id": 1,
+      "from_student": true,
+      "answers": [
+        {
+          "question_num": 1,
+          "content": "Η ανάλυση ασκήσεων ήταν εξαιρετική."
+        },
+        {
+          "question_num": 2,
+          "content": 5.0
+        }
+      ]
+    },
+    {
+      "questionnaire_id": 2,
+      "from_student": false,
+      "answers": [
+        {
+          "question_num": 1,
+          "content": "Η κανονικοποίηση βάσεων ήταν αρκετά δύσκολη."
+        },
+        {
+          "question_num": 2,
+          "content": 4.0
+        }
+      ]
+    }
+  ]
+  

@@ -1,0 +1,42 @@
+[
+    {
+      "student_id": "2022001",
+      "questionnaire_id": 1,
+      "title": "Αξιολόγηση Μαθήματος Python",
+      "description": "Πείτε μας τη γνώμη σας για το μάθημα Python.",
+      "answer_count": 0,
+      "unique_url": "questionnaire-1",
+      "questions": [
+        {
+          "type": "Open Ended",
+          "description": "Τι σου άρεσε περισσότερο στο μάθημα Python;",
+          "question_num": 1
+        },
+        {
+          "type": "Numeric",
+          "description": "Πόσο χρήσιμο θεωρείς το μάθημα (1-5);",
+          "question_num": 2
+        }
+      ]
+    },
+    {
+      "student_id": "2022002",
+      "questionnaire_id": 2,
+      "title": "Αξιολόγηση Μαθήματος Βάσεων Δεδομένων",
+      "description": "Πείτε μας τη γνώμη σας για το μάθημα Βάσεων Δεδομένων.",
+      "answer_count": 0,
+      "unique_url": "questionnaire-2",
+      "questions": [
+        {
+          "type": "Open Ended",
+          "description": "Ποια ενότητα σας δυσκόλεψε περισσότερο;",
+          "question_num": 1
+        },
+        {
+          "type": "Numeric",
+          "description": "Πόσο ενδιαφέρον βρήκατε το μάθημα (1-5);",
+          "question_num": 2
+        }
+      ]
+    }
+  ]

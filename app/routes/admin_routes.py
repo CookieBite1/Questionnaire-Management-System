@@ -7,6 +7,7 @@ admin_bp = Blueprint('admin', __name__)
 @admin_bp.route('/manage-students')
 def manage_students():
     students = get_all_students()
+    print(students)
     return render_template('manage_students.html', students=students)
 
 @admin_bp.route('/create-student', methods=['GET', 'POST'])

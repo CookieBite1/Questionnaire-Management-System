@@ -4,11 +4,39 @@
 
 {% block content %}
 <h2>Λίστα Φοιτητών</h2>
-<ul>
-  <li>2021001 - Γιάννης Παπαδόπουλος <a href="/admin/delete-student/2021001">Διαγραφή</a></li>
-  <li>2021002 - Μαρία Νικολάου <a href="/admin/delete-student/2021002">Διαγραφή</a></li>
-  <li>2021003 - Δημήτρης Κωνσταντίνου <a href="/admin/delete-student/2021003">Διαγραφή</a></li>
-</ul>
+<body>
+  <table border="1">
+    <thead>
+        <tr>
+            <th>Αριθμός Μητρώου</th>
+            <th>Όνομα</th>
+            <th>Email</th>
+            <th>Έτος Γέννησης</th>
+            <th>Διεύθυνση</th>
+        </tr>
+    </thead>
+    <tbody>
+      {% for student in students %}
+      <tr>
+        <td>{{ student.reg_number }}</td>
+        <td>{{ student.name }}</td>
+        <td>{{ student.email }}</td>
+        <td>{{ student.yearOfBirth }}</td>
+        <td>
+          {% if student.address %}
+            {{ student.address.street }}, {{ student.address.city }} {{ student.address.postcode }}
+          {% else %}
+            -
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    
+</table>
 
-<a href="/admin/create-student">Προσθήκη Νέου Φοιτητή</a>
+
+</body>
+
+
 {% endblock %}
