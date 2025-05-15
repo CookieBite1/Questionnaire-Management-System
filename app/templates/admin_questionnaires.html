@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Αναζήτηση Ερωτηματολογίων{% endblock %}
+
+{% block content %}
+<h2>Αναζήτηση Ερωτηματολογίων</h2>
+
+<form method="get">
+  Τίτλος: <input type="text" name="title" value="{{ filters.title }}"><br>
+  Φοιτητής: <input type="text" name="student_name" value="{{ filters.student_name }}"><br>
+  Τμήμα: <input type="text" name="department" value="{{ filters.department }}"><br>
+  Απαντήσεις: Από <input type="number" name="min_answers" value="{{ filters.min_answers }}" style="width:60px;">
+  έως <input type="number" name="max_answers" value="{{ filters.max_answers }}" style="width:60px;"><br>
+  <input type="submit" value="Αναζήτηση">
+</form>
+
+<hr>
+
+{% if questionnaires %}
+<table border="1" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Τίτλος</th>
+      <th>Περιγραφή</th>
+      <th>Απαντήσεις</th>
+      <th>Φοιτητής</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for q in questionnaires %}
+    <tr>
+      <td>{{ q.title }}</td>
+      <td>{{ q.description }}</td>
+      <td>{{ q.answer_count }}</td>
+      <td>{{ q.student_id }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Δεν βρέθηκαν αποτελέσματα.</p>
+{% endif %}
+{% endblock %}

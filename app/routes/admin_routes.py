@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, request, redirect
 from app.models.student_model import create_student, delete_student_by_reg_number
 from app.models.student_model import get_all_students
+from app.models.questionnaire_model import get_all_questionnaires_sorted
+from app.models.questionnaire_model import search_questionnaires
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -29,3 +31,29 @@ def create_student_view():
 def delete_student_view(reg_number):
     delete_student_by_reg_number(int(reg_number))
     return redirect('/admin/manage-students')
+
+@admin_bp.route('/questionnaires')
+def admin_questionnaires():
+    filters = {
+        'title': request.args.get('title', ''),
+        'min_answers': request.args.get('min_answers', ''),
+        'max_answers': request.args.get('max_answers', ''),
+        'student_name': request.args.get('student_name', ''),
+        'department': request.args.get('department', '')
+    }
+
+    sort = request.args.get('sort', '')  # optional
+
+    if any(filters.values()):
+        questionnaires = search_questionnaires(filters)
+    elif sort:
+        questionnaires = get_all_questionnaires_sorted(sort)
+    else:
+        questionnaires = get_all_questionnaires_sorted('desc')  # default
+
+    return render_template(
+        'admin_questionnaires.html',
+        questionnaires=questionnaires,
+        filters=filters,
+        current_sort=sort
+    )
