@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from app.models.student_model import create_student, delete_student_by_reg_number
 from app.models.student_model import get_all_students
 from app.models.questionnaire_model import get_all_questionnaires_sorted
@@ -6,8 +6,23 @@ from app.models.questionnaire_model import search_questionnaires
 
 admin_bp = Blueprint('admin', __name__)
 
+@admin_bp.route('/login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username == 'admin' and password == 'admin123':
+            session['admin'] = True
+            flash("Καλωσήρθες διαχειριστή!", "success")
+            return redirect(url_for('admin.manage_students'))
+        else:
+            flash("Λάθος στοιχεία!", "error")
+    return render_template('admin_login.html')
+
 @admin_bp.route('/manage-students')
 def manage_students():
+    if not session.get('admin'):
+        return redirect(url_for('admin.admin_login'))
     students = get_all_students()
     print(students)
     return render_template('manage_students.html', students=students)

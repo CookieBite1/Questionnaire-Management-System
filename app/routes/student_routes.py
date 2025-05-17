@@ -1,26 +1,34 @@
-from flask import Blueprint, render_template, request, redirect, session
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from app.models.student_model import find_student
 from app.models.questionnaire_model import create_questionnaire, find_questionnaires_by_student
 
 student_bp = Blueprint('student', __name__)
+
+@student_bp.route("/dashboard", endpoint="dashboard")
+def dashboard():
+    return render_template("student_dashboard.html")
 
 @student_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+
         student = find_student(username)
-        if student and student['password'] == password:
+        if student and student.get('password') == password:
             session['student'] = username
-            return redirect('/student/my-questionnaires')
+            flash("Επιτυχής σύνδεση!", "success")
+            return redirect(url_for('student.dashboard'))  # δική σου σελίδα
         else:
-            return render_template('login.html', error="Λάθος στοιχεία")
+            flash("Λάθος στοιχεία!", "error")
+
     return render_template('login.html')
 
 @student_bp.route('/logout')
 def logout():
-    session.pop('student', None)
-    return redirect('/')
+    session.clear()
+    flash("Αποσυνδέθηκες.")
+    return redirect(url_for('student.login'))
 
 @student_bp.route('/create', methods=['GET', 'POST'])
 def create_questionnaire_view():

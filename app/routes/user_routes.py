@@ -1,11 +1,11 @@
-from flask import Blueprint, render_template, request, redirect
+from flask import Blueprint, render_template, request, redirect, url_for
 from app.models.questionnaire_model import get_all_questionnaires
 
 user_bp = Blueprint('user', __name__)
 
 @user_bp.route('/')
 def index():
-    return render_template('index.html')
+    return redirect(url_for('student.login'))  # ή admin.login αν θες αρχικά
 
 @user_bp.route('/questionnaires')
 def view_questionnaires():

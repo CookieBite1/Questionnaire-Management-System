@@ -1,28 +1,102 @@
-<!-- templates/base.html -->
 <!DOCTYPE html>
 <html lang="el">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}UniQ - ΠαΠει{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f5f7;
+            margin: 0;
+        }
+
+        header {
+            background-color: #003366;
+            color: white;
+            padding: 15px 30px;
+        }
+
+        nav {
+            margin-top: 10px;
+        }
+
+        nav a {
+            color: white;
+            margin-right: 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .user-info {
+            margin-top: 5px;
+            font-size: 0.9em;
+            color: #cce;
+        }
+
+        main {
+            padding: 20px 40px;
+            min-height: 80vh;
+        }
+
+        footer {
+            background-color: #e6e6e6;
+            color: #333;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .flash {
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #ffd;
+            border: 1px solid #ccc;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Σύστημα Ερωτηματολογίων ΠαΠει</h1>
-        <nav>
-            <a href="/">Αρχική</a>
-            <a href="/user/questionnaires">Ερωτηματολόγια</a>
-            <a href="/student/login">Σύνδεση</a>
+
+<header>
+    <h1>Σύστημα Ερωτηματολογίων ΠαΠει</h1>
+
+    <nav>
+        {% if session.student %}
+            <a href="/student/dashboard">Αρχική</a>
+            <a href="/student/my-questionnaires">Τα Ερωτηματολόγιά μου</a>
+            <a href="/student/create">Δημιουργία</a>
+            <a href="/student/logout">Αποσύνδεση</a>
+            <span class="user-info">Φοιτητής: {{ session.student }}</span>
+        {% elif session.admin %}
             <a href="/admin/manage-students">Διαχείριση Φοιτητών</a>
             <a href="/admin/questionnaires">Προβολή Ερωτηματολογίων</a>
-        </nav>
-    </header>
-    <main>
-        {% block content %}{% endblock %}
-    </main>
+            <a href="/student/logout">Αποσύνδεση</a>
+            <span class="user-info">Ρόλος: Διαχειριστής</span>
+        {% else %}
+            <a href="/student/login">Σύνδεση Φοιτητή</a>
+            <a href="/admin/login">Σύνδεση Διαχειριστή</a>
+        {% endif %}
+    </nav>
+</header>
 
-    <footer>
-        © 2025 Πανεπιστήμιο Πειραιώς
-    </footer>
+<main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    © 2025 Πανεπιστήμιο Πειραιώς
+</footer>
+
 </body>
 </html>

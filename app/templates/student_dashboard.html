@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard Φοιτητή{% endblock %}
+
+{% block content %}
+<h2>Καλωσήρθες, {{ username }}!</h2>
+
+<ul>
+  <li><a href="/student/my-questionnaires">Τα Ερωτηματολόγιά μου</a></li>
+  <li><a href="/student/create">Δημιουργία Νέου Ερωτηματολογίου</a></li>
+  <li><a href="/student/logout">Αποσύνδεση</a></li>
+</ul>
+{% endblock %}
