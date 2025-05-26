@@ -9,7 +9,7 @@ def create_app():
     app = Flask(__name__)
     
     # --- Session Config ---
-    app.secret_key = 'supersecretkey123' 
+    app.secret_key = os.getenv("SECRET_KEY", "supersecretkey123")  # για Flask session
 
     # --- MongoDB Config ---
     mongo_host = os.getenv('MONGO_HOST', 'localhost')  # Default = localhost if not exists

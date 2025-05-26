@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from app.models.student_model import find_student
-from app.models.questionnaire_model import create_questionnaire, find_questionnaires_by_student
+from app.models.questionnaire_model import find_questionnaires_by_student
+from app.db.db_operations import get_db
+from uuid import uuid4
 
 student_bp = Blueprint('student', __name__)
 
@@ -30,28 +32,40 @@ def logout():
     flash("Αποσυνδέθηκες.")
     return redirect(url_for('student.login'))
 
-@student_bp.route('/create', methods=['GET', 'POST'])
-def create_questionnaire_view():
-    if 'student' not in session:
-        return redirect('/student/login')
+@student_bp.route("/create", methods=["GET", "POST"])
+def create_questionnaire():
+    if request.method == "POST":
+        db = get_db()
+        title = request.form["title"]
+        description = request.form["description"]
+        student_id = session.get("student_id")  # AEM από session
 
-    if request.method == 'POST':
-        title = request.form['title']
-        description = request.form['description']
         questions = []
-        for i in range(1, 6):  
-            q_text = request.form.get(f'q{i}')
-            if q_text:
-                questions.append({
-                    "type": "Open Ended",
-                    "description": q_text,
-                    "question_num": i
-                })
+        for i in range(len(request.form.getlist("question_type"))):
+            questions.append({
+                "type": request.form.getlist("question_type")[i],
+                "description": request.form.getlist("question_text")[i],
+                "question_num": i + 1
+            })
 
-        create_questionnaire(session['student'], title, description, questions)
-        return redirect('/student/my-questionnaires')
+        questionnaire_id = str(uuid4())
+        unique_url = f"/questionnaire/view?qid={questionnaire_id}"
 
-    return render_template('create_questionnaire.html')
+        questionnaire = {
+            "student_id": student_id,
+            "questionnaire_id": questionnaire_id,
+            "title": title,
+            "description": description,
+            "answer_count": 0,
+            "unique_url": unique_url,
+            "questions": questions
+        }
+
+        db["questionnaires"].insert_one(questionnaire)
+        return redirect(unique_url)
+
+    return render_template("create_questionnaire.html")
+
 
 @student_bp.route('/my-questionnaires')
 def my_questionnaires():

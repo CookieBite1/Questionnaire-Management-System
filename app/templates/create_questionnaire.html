@@ -1,16 +1,43 @@
 {% extends "base.html" %}
-
 {% block title %}Δημιουργία Ερωτηματολογίου{% endblock %}
-
 {% block content %}
-<h2>Δημιουργία Νέου Ερωτηματολογίου</h2>
-<form method="POST" action="/student/create">
-  <label>Τίτλος:</label><br>
-  <input type="text" name="title" required><br><br>
+<h2>Κατασκευή Ερωτηματολογίου</h2>
 
-  <label>Περιγραφή:</label><br>
-  <textarea name="description" required></textarea><br><br>
+<form method="POST">
+    <label>Τίτλος:</label>
+    <input type="text" name="title" required><br>
 
-  <button type="submit">Δημιουργία</button>
+    <label>Περιγραφή:</label>
+    <textarea name="description" required></textarea><br>
+
+    <div id="questions">
+        <div class="question">
+            <label>Τύπος Ερώτησης:</label>
+            <select name="question_type">
+                <option value="Open Ended">Ανοικτού Τύπου</option>
+                <option value="Numeric">Αριθμητική</option>
+            </select>
+            <input type="text" name="question_text" placeholder="Περιγραφή ερώτησης" required>
+        </div>
+    </div>
+    <button type="button" onclick="addQuestion()">Προσθήκη Ερώτησης</button><br><br>
+    <input type="submit" value="Δημιουργία">
 </form>
+
+<script>
+function addQuestion() {
+    const container = document.getElementById('questions');
+    const div = document.createElement('div');
+    div.classList.add('question');
+    div.innerHTML = `
+        <label>Τύπος Ερώτησης:</label>
+        <select name="question_type">
+            <option value="Open Ended">Ανοικτού Τύπου</option>
+            <option value="Numeric">Αριθμητική</option>
+        </select>
+        <input type="text" name="question_text" placeholder="Περιγραφή ερώτησης" required>
+    `;
+    container.appendChild(div);
+}
+</script>
 {% endblock %}

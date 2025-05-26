@@ -10,18 +10,6 @@ def find_questionnaire_by_id(questionnaire_id):
 def find_questionnaires_by_student(username):
     return list(mongo.db.questionnaires.find({"creator_username": username}))
 
-def create_questionnaire(username, title, description, questions):
-    questionnaire_id = random.randint(10000, 99999)  
-    questionnaire = {
-        "questionnaire_id": questionnaire_id,
-        "creator_username": username,
-        "title": title,
-        "description": description,
-        "questions": questions,
-        "answer_count": 0
-    }
-    mongo.db.questionnaires.insert_one(questionnaire)
-
 def get_all_questionnaires_sorted(order='desc'):
     sort_order = -1 if order == 'desc' else 1
     return list(mongo.db.questionnaires.find().sort("answer_count", sort_order))
