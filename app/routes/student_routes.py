@@ -19,6 +19,8 @@ def login():
         student = find_student(username)
         if student and student.get('password') == password:
             session['student'] = username
+            session["reg_number"] = str(student["_id"])
+
             flash("Επιτυχής σύνδεση!", "success")
             return redirect(url_for('student.dashboard'))  # δική σου σελίδα
         else:
@@ -38,7 +40,7 @@ def create_questionnaire():
         db = get_db()
         title = request.form["title"]
         description = request.form["description"]
-        student_id = session.get("student_id")  # AEM από session
+        student_id = session.get("reg_number") 
 
         questions = []
         for i in range(len(request.form.getlist("question_type"))):
@@ -62,15 +64,24 @@ def create_questionnaire():
         }
 
         db["questionnaires"].insert_one(questionnaire)
-        return redirect(unique_url)
+        return redirect(url_for("student.dashboard"))
 
     return render_template("create_questionnaire.html")
 
-
-@student_bp.route('/my-questionnaires')
+@student_bp.route("/my-questionnaires")
 def my_questionnaires():
-    if 'student' not in session:
-        return redirect('/student/login')
+    reg_number = session.get("reg_number")
 
-    questionnaires = find_questionnaires_by_student(session['student'])
-    return render_template('view_questionnaires.html', questionnaires=questionnaires)
+    if not reg_number:
+        # Δεν έχει συνδεθεί
+        return redirect(url_for("student.login"))
+
+    db = get_db()
+    questionnaires = list(db["questionnaires"].find({"student_id": reg_number}))
+
+    return render_template(
+        "view_questionnaires.html",
+        questionnaires=questionnaires
+    )
+
+

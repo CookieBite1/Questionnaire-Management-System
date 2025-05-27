@@ -1,12 +1,26 @@
-{% extends "base.html" %}
+<h2>Τα Ερωτηματολόγιά Μου</h2>
 
-{% block title %}Λίστα Ερωτηματολογίων{% endblock %}
-
-{% block content %}
-<h2>Διαθέσιμα Ερωτηματολόγια</h2>
-<ul>
-  <li><a href="/user/questionnaire/1">Ερωτηματολόγιο 1</a></li>
-  <li><a href="/user/questionnaire/2">Ερωτηματολόγιο 2</a></li>
-  <li><a href="/user/questionnaire/3">Ερωτηματολόγιο 3</a></li>
-</ul>
-{% endblock %}
+{% if questionnaires %}
+    <table>
+        <thead>
+            <tr>
+                <th>Τίτλος</th>
+                <th>Περιγραφή</th>
+                <th>Αριθμός Απαντήσεων</th>
+                <th>Σύνδεσμος</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for q in questionnaires %}
+            <tr>
+                <td>{{ q.title }}</td>
+                <td>{{ q.description }}</td>
+                <td>{{ q.answer_count }}</td>
+                <td><a href="{{ url_for('user.view_questionnaire', questionnaire_id=q.questionnaire_id) }}">Άνοιγμα</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p style="color: gray;">Δεν έχετε δημιουργήσει ακόμα κάποιο ερωτηματολόγιο.</p>
+{% endif %}

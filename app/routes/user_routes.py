@@ -15,7 +15,7 @@ def view_questionnaires():
 @user_bp.route('/questionnaire/<questionnaire_id>', methods=['GET'])
 def view_questionnaire(questionnaire_id):
     from app.models.questionnaire_model import find_questionnaire_by_id
-    questionnaire = find_questionnaire_by_id(int(questionnaire_id))
+    questionnaire = find_questionnaire_by_id(questionnaire_id)
     return render_template('answer_questionnaire.html', questionnaire=questionnaire)
 
 @user_bp.route('/questionnaire/<questionnaire_id>/submit', methods=['POST'])
