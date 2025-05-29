@@ -1,7 +1,9 @@
 # Questionnaire-Management-System
 
-# GanttDiagram 
+# 📅 ΧΡΟΝΙΚΟ ΠΛΑΝΟ (Gantt Plan)
 ![Instapen](https://github.com/user-attachments/assets/4756005a-744f-432a-8ce7-a1db4893a9a6)
+
+---
 
 # Πίνακας Ρίσκων Υλοποίησης
 | Κωδικός | Περιγραφή Ρίσκου                            | Πιθανότητα | Επίδραση | Αντιμετώπιση                                  |
@@ -12,7 +14,9 @@
 | R4      | Απώλεια δεδομένων                           | Χαμηλή     | Υψηλή    | Backup/Restore και logging                    |
 | R5      | Παραβίαση ασφάλειας (login/admin access)    | Μεσαία     | Υψηλή    | Hash κωδικών, session controls                |
 
-# Data Flow Diagram
+---
+
+#  📈 Flow Diagram (Data Flow)
 [Φοιτητής] --> (Είσοδος στο Σύστημα)
 [Χρήστης] --> (Απάντηση Ερωτηματολογίου)
 [Διαχειριστής] --> (Διαχείριση Φοιτητών)
@@ -101,30 +105,6 @@
 - Gantt Chart
 - Data Flow Diagram
 - Risk Table
-
----
-
-# 📅 ΧΡΟΝΙΚΟ ΠΛΑΝΟ (Gantt Plan)
-
-| Εβδομάδα | Εργασία |
-|:---------|:--------|
-| 1 | Ανάλυση Εκφώνησης - Σχεδιασμός API |
-| 2 | Ανάπτυξη API - Database Σύνδεση |
-| 3 | Δημιουργία UI με Templates |
-| 4 | Dockerization + Testing |
-| 5 | Δημιουργία README, Gantt, Flow Diagram, Risk Table |
-| 6 | Ολοκλήρωση, Debugging, Παράδοση |
-
----
-
-# 📈 Flow Diagram (Data Flow)
-
-**Μπορούμε να το σχεδιάσουμε** ως εξής:
-- Ο Χρήστης κάνει Request στο Flask Server
-- Ο Server ρωτάει την MongoDB
-- Η MongoDB επιστρέφει απαντήσεις
-- Ο Server στέλνει Templates / API Responses στον Χρήστη
-
 ---
 ```
 project/
