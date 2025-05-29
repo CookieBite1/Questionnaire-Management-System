@@ -1,4 +1,6 @@
 # Questionnaire-Management-System
+# GranttDiagram 
+![Instapen](https://github.com/user-attachments/assets/4756005a-744f-432a-8ce7-a1db4893a9a6)
 
 ## Περιεχόμενα
 - [Περιγραφή](#περιγραφή)
