@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Δημιουργία Φοιτητή{% endblock %}
+{% block content %}
+<h2>Δημιουργία Φοιτητή</h2>
+<form method="post">
+    Όνομα: <input type="text" name="name"><br>
+    Επώνυμο: <input type="text" name="surname"><br>
+    Αριθμός Μητρώου (reg_number): <input type="text" name="reg_number"><br>
+    Τμήμα: <input type="text" name="department"><br>
+    Όνομα Χρήστη (username): <input type="text" name="username"><br>
+    Κωδικός: <input type="password" name="password"><br>
+    <input type="submit" value="Προσθήκη">
+</form>
+{% endblock %}

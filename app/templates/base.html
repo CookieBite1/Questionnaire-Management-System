@@ -69,6 +69,7 @@
             <a href="/student/my-questionnaires">Τα Ερωτηματολόγιά μου</a>
             <a href="/student/create">Δημιουργία</a>
             <a href="/student/logout">Αποσύνδεση</a>
+            <a href="/student/change-password">Αλλαγή Κωδικού</a>
             <span class="user-info">Φοιτητής: {{ session.student }}</span>
         {% elif session.admin %}
             <a href="/admin/manage-students">Διαχείριση Φοιτητών</a>
@@ -79,6 +80,7 @@
             <a href="/user/questionnaires">Διαθέσιμα Ερωτηματολόγια</a>
             <a href="/student/login">Σύνδεση Φοιτητή</a>
             <a href="/admin/login">Σύνδεση Διαχειριστή</a>
+
         {% endif %}
     </nav>
 </header>

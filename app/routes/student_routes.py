@@ -112,20 +112,56 @@ def delete_questionnaire(questionnaire_id):
     flash("Το ερωτηματολόγιο διαγράφηκε.", "success")
     return redirect(url_for('student.my_questionnaires'))
 
-@student_bp.route("/questionnaire-answers/<questionnaire_id>")
+@student_bp.route("/questionnaire/<questionnaire_id>/answers", methods=["GET"])
 def questionnaire_answers(questionnaire_id):
     db = get_db()
-    answers = list(db['answered_questionnaires'].find({"questionnaire_id": questionnaire_id}))
+
+    # Βρες το ερωτηματολόγιο
+    questionnaire = db["questionnaires"].find_one({"questionnaire_id": questionnaire_id})
+    if not questionnaire:
+        flash("Το ερωτηματολόγιο δεν βρέθηκε.", "error")
+        return redirect(url_for("student.my_questionnaires"))
+
+    # Βρες τις απαντήσεις
+    answers = list(db["answered_questionnaires"].find({"questionnaire_id": questionnaire_id}))
 
     total = len(answers)
-    from_students = len([a for a in answers if a.get("from_student") is True])
-    from_users = total - from_students
+    from_student = len([a for a in answers if a.get("from_student")])
+    from_user = total - from_student
+    user_percentage = round((from_user / total) * 100, 2) if total > 0 else 0
 
-    percentage_users = (from_users / total * 100) if total > 0 else 0
+    return render_template(
+        "questionnaire_answers.html",
+        questionnaire=questionnaire,
+        answers=answers,
+        total=total,
+        from_student=from_student,
+        from_user=from_user,
+        user_percentage=user_percentage
+    )
 
-    return render_template("questionnaire_answers.html",
-                           total=total,
-                           from_students=from_students,
-                           from_users=from_users,
-                           percentage_users=percentage_users,
-                           answers=answers)
+# app/routes/student_routes.py
+@student_bp.route('/change-password', methods=['GET', 'POST'])
+def change_password():
+    if 'student' not in session:
+        return redirect(url_for('student.login'))
+
+    db = get_db()
+    username = session['student']
+    student = db.students.find_one({'username': username})
+
+    if request.method == 'POST':
+        current = request.form['current_password']
+        new = request.form['new_password']
+        confirm = request.form['confirm_password']
+
+        if student['password'] != current:
+            flash('Ο τρέχων κωδικός είναι λάθος.', 'error')
+        elif new != confirm:
+            flash('Οι νέοι κωδικοί δεν ταιριάζουν.', 'error')
+        else:
+            db.students.update_one({'username': username}, {'$set': {'password': new}})
+            flash('Ο κωδικός άλλαξε με επιτυχία.', 'success')
+            return redirect(url_for('student.dashboard'))
+
+    return render_template('change_password.html')

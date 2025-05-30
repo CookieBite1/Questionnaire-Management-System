@@ -1,6 +1,17 @@
+{# templates/admin_login.html #}
+{% extends "base.html" %}
+
+{% block title %}Σύνδεση Διαχειριστή{% endblock %}
+
+{% block content %}
 <h2>Σύνδεση Διαχειριστή</h2>
 <form method="post">
-  Όνομα χρήστη: <input type="text" name="username"><br>
-  Κωδικός: <input type="password" name="password"><br>
+  <label>Όνομα χρήστη:</label>
+  <input type="text" name="username"><br><br>
+  
+  <label>Κωδικός:</label>
+  <input type="password" name="password"><br><br>
+  
   <input type="submit" value="Σύνδεση">
 </form>
+{% endblock %}

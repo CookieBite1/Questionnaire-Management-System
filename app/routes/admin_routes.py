@@ -3,6 +3,7 @@ from app.models.student_model import create_student, delete_student_by_reg_numbe
 from app.models.student_model import get_all_students
 from app.models.questionnaire_model import get_all_questionnaires_sorted
 from app.models.questionnaire_model import search_questionnaires
+from app.db.db_operations import get_db
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -72,3 +73,35 @@ def admin_questionnaires():
         filters=filters,
         current_sort=sort
     )
+
+@admin_bp.route("/admin/create-student", methods=["GET", "POST"])
+def create_student():
+    if request.method == "POST":
+        student = {
+            "name": request.form["name"],
+            "surname": request.form["surname"],
+            "reg_number": request.form["reg_number"],
+            "department": request.form["department"],
+            "username": request.form["username"],
+            "password": request.form["password"],
+        }
+        db = get_db()
+        if db.students.find_one({"reg_number": student["reg_number"]}):
+            flash("Ο φοιτητής υπάρχει ήδη!", "error")
+        else:
+            db.students.insert_one(student)
+            flash("Ο φοιτητής προστέθηκε!", "success")
+            return redirect(url_for("admin.manage_students"))
+
+    return render_template("create_student.html")
+
+@admin_bp.route("/admin/delete-student/<reg_number>", methods=["POST"])
+def delete_student(reg_number):
+    db = get_db()
+    db.students.delete_one({"reg_number": reg_number})
+    db.questionnaires.delete_many({"student_id": reg_number})
+    db.answered_questionnaires.delete_many({"questionnaire_id": {"$in": [
+        q["questionnaire_id"] for q in db.questionnaires.find({"student_id": reg_number})
+    ]}})
+    flash("Ο φοιτητής διαγράφηκε!", "success")
+    return redirect(url_for("admin.manage_students"))

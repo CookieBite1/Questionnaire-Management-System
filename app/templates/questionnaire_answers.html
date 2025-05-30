@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Απαντήσεις{% endblock %}
+
+{% block content %}
+<h2>Απαντήσεις για: {{ questionnaire.title }}</h2>
+
+<p><strong>Σύνολο απαντήσεων:</strong> {{ total }}</p>
+<p><strong>Απαντήσεις από φοιτητές:</strong> {{ from_student }}</p>
+<p><strong>Απαντήσεις από απλούς χρήστες:</strong> {{ from_user }}</p>
+<p><strong>Ποσοστό χρηστών:</strong> {{ user_percentage }}%</p>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Απαντήσεις</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for a in answers %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>
+                <ul>
+                {% for ans in a.answers %}
+                    <li><strong>Ερώτηση {{ ans.question_num }}:</strong> {{ ans.content }}</li>
+                {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
