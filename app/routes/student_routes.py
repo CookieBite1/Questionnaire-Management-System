@@ -84,4 +84,48 @@ def my_questionnaires():
         questionnaires=questionnaires
     )
 
+@student_bp.route('/edit-questionnaire/<questionnaire_id>', methods=['GET', 'POST'])
+def edit_questionnaire(questionnaire_id):
+    db = get_db()
+    questionnaire = db['questionnaires'].find_one({"questionnaire_id": questionnaire_id})
 
+    if not questionnaire:
+        flash("Δεν βρέθηκε το ερωτηματολόγιο.", "error")
+        return redirect(url_for("student.my_questionnaires"))
+
+    if request.method == 'POST':
+        new_title = request.form['title']
+        db['questionnaires'].update_one(
+            {"questionnaire_id": questionnaire_id},
+            {"$set": {"title": new_title}}
+        )
+        flash("Ο τίτλος ενημερώθηκε!", "success")
+        return redirect(url_for("student.my_questionnaires"))
+
+    return render_template('edit_questionnaire.html', questionnaire=questionnaire)
+
+@student_bp.route('/delete-questionnaire/<questionnaire_id>', methods=['POST'])
+def delete_questionnaire(questionnaire_id):
+    db = get_db()
+    db['questionnaires'].delete_one({"questionnaire_id": questionnaire_id})
+    db['answered_questionnaires'].delete_many({"questionnaire_id": questionnaire_id})
+    flash("Το ερωτηματολόγιο διαγράφηκε.", "success")
+    return redirect(url_for('student.my_questionnaires'))
+
+@student_bp.route("/questionnaire-answers/<questionnaire_id>")
+def questionnaire_answers(questionnaire_id):
+    db = get_db()
+    answers = list(db['answered_questionnaires'].find({"questionnaire_id": questionnaire_id}))
+
+    total = len(answers)
+    from_students = len([a for a in answers if a.get("from_student") is True])
+    from_users = total - from_students
+
+    percentage_users = (from_users / total * 100) if total > 0 else 0
+
+    return render_template("questionnaire_answers.html",
+                           total=total,
+                           from_students=from_students,
+                           from_users=from_users,
+                           percentage_users=percentage_users,
+                           answers=answers)

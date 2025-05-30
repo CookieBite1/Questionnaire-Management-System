@@ -1,20 +1,19 @@
 {% extends "base.html" %}
-
-{% block title %}Απάντηση Ερωτηματολογίου{% endblock %}
-
+{% block title %}Απαντήσεις{% endblock %}
 {% block content %}
-<h2>Απάντησε το Ερωτηματολόγιο ID: {{ id }}</h2>
+<h2>Απαντήσεις Ερωτηματολογίου</h2>
+<p>Σύνολο απαντήσεων: {{ total }}</p>
+<p>Απαντήσεις από φοιτητές: {{ from_students }}</p>
+<p>Απαντήσεις από απλούς χρήστες: {{ from_users }}</p>
+<p>Ποσοστό χρηστών: {{ percentage_users | round(2) }}%</p>
 
-<form method="POST" action="/user/questionnaire/{{ id }}">
-  <p>Ερώτηση 1: Πόσο ικανοποιημένος/η είσαι από το μάθημα;</p>
-  <select name="q1">
-    <option>Πολύ</option>
-    <option>Αρκετά</option>
-    <option>Λίγο</option>
-    <option>Καθόλου</option>
-  </select>
-
-  <br><br>
-  <button type="submit">Υποβολή</button>
-</form>
+<h3>Λεπτομέρειες</h3>
+{% for answer in answers %}
+    <ul>
+        {% for a in answer.answers %}
+            <li><strong>Ερώτηση #{{ a.question_num }}:</strong> {{ a.content }}</li>
+        {% endfor %}
+    </ul>
+    <hr>
+{% endfor %}
 {% endblock %}

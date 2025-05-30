@@ -11,7 +11,7 @@
             <th>Τίτλος</th>
             <th>Περιγραφή</th>
             <th>Αριθμός Απαντήσεων</th>
-            <th>Σύνδεσμος</th>
+            <th>Ενέργειες</th>
         </tr>
     </thead>
     <tbody>
@@ -20,11 +20,26 @@
             <td>{{ q.title }}</td>
             <td>{{ q.description }}</td>
             <td>{{ q.answer_count }}</td>
-                <td><a href="{{ url_for('user.view_questionnaire', questionnaire_id=q.questionnaire_id) }}">Άνοιγμα</a></td>
+            <td>
+                <!-- Άνοιγμα Ερωτηματολογίου -->
+                <a href="{{ url_for('user.view_questionnaire', questionnaire_id=q.questionnaire_id) }}">Άνοιγμα</a> |
+
+                <!-- Επεξεργασία Τίτλου -->
+                <a href="{{ url_for('student.edit_questionnaire', questionnaire_id=q.questionnaire_id) }}">Επεξεργασία</a> |
+
+                <!-- Προβολή Απαντήσεων -->
+                <a href="{{ url_for('student.questionnaire_answers', questionnaire_id=q.questionnaire_id) }}">Απαντήσεις</a> |
+
+                <!-- Διαγραφή -->
+                <form action="{{ url_for('student.delete_questionnaire', questionnaire_id=q.questionnaire_id) }}" method="POST" style="display:inline;">
+                    <button type="submit" onclick="return confirm('Σίγουρα θέλετε να διαγράψετε το ερωτηματολόγιο;')">Διαγραφή</button>
+                </form>
+            </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+
 {% else %}
 <p>Δεν έχετε δημιουργήσει ακόμα κάποιο ερωτηματολόγιο.</p>
 {% endif %}

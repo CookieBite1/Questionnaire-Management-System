@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Διαθέσιμα Ερωτηματολόγια{% endblock %}
+
+{% block content %}
+<h2>Διαθέσιμα Ερωτηματολόγια</h2>
+
+<form method="get" action="">
+    <input type="text" name="title" placeholder="Τίτλος" value="{{ request.args.title }}">
+    <input type="text" name="student_name" placeholder="Φοιτητής" value="{{ request.args.student_name }}">
+    <input type="text" name="department" placeholder="Τμήμα" value="{{ request.args.department }}">
+    <input type="number" name="min_answers" placeholder="Από απαντήσεις" value="{{ request.args.min_answers }}">
+    <input type="number" name="max_answers" placeholder="Μέχρι απαντήσεις" value="{{ request.args.max_answers }}">
+    <select name="sort">
+        <option value="desc" {% if request.args.sort == 'desc' %}selected{% endif %}>Πιο δημοφιλή</option>
+        <option value="asc" {% if request.args.sort == 'asc' %}selected{% endif %}>Λιγότερο δημοφιλή</option>
+    </select>
+    <button type="submit">Αναζήτηση</button>
+</form>
+
+{% if questionnaires %}
+<table border="1">
+    <thead>
+        <tr>
+            <th>Τίτλος</th>
+            <th>Περιγραφή</th>
+            <th>Απαντήσεις</th>
+            <th>Ενέργεια</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for q in questionnaires %}
+        <tr>
+            <td>{{ q.title }}</td>
+            <td>{{ q.description }}</td>
+            <td>{{ q.answer_count }}</td>
+            <td><a href="{{ url_for('user.view_questionnaire', questionnaire_id=q.questionnaire_id) }}">Άνοιγμα</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Δεν υπάρχουν διαθέσιμα ερωτηματολόγια.</p>
+{% endif %}
+{% endblock %}
