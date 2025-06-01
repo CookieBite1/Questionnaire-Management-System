@@ -25,7 +25,7 @@
       <td>{{ student.name }}</td>
       <td>{{ student.email }}</td>
       <td>
-        {% if student.yearOfBirth['$numberInt'] %}
+        {% if student.get('yearOfBirth') and student.yearOfBirth.get('$numberInt') %}
           {{ student.yearOfBirth['$numberInt'] }}
         {% else %}
           -
@@ -39,7 +39,7 @@
         {% endif %}
       </td>
       <td>
-        <form method="post" action="{{ url_for('admin.delete_student', reg_number=student.reg_number) }}" onsubmit="return confirm('Είστε σίγουροι ότι θέλετε να διαγράψετε τον φοιτητή;');" style="display:inline;">
+        <form method="post" action="{{ url_for('admin.delete_student', reg_number=student['reg_number'])}} onsubmit="return confirm('Είστε σίγουροι ότι θέλετε να διαγράψετε τον φοιτητή;');" style="display:inline;">
           <button type="submit">🗑️ Διαγραφή</button>
         </form>
       </td>

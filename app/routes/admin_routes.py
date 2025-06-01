@@ -98,10 +98,20 @@ def create_student():
 @admin_bp.route("/admin/delete-student/<reg_number>", methods=["POST"])
 def delete_student(reg_number):
     db = get_db()
-    db.students.delete_one({"reg_number": reg_number})
-    db.questionnaires.delete_many({"student_id": reg_number})
-    db.answered_questionnaires.delete_many({"questionnaire_id": {"$in": [
+
+    # Βρες όλα τα questionnaire_id του φοιτητή πριν τα διαγράψεις
+    questionnaire_ids = [
         q["questionnaire_id"] for q in db.questionnaires.find({"student_id": reg_number})
-    ]}})
+    ]
+
+    # Διαγραφή answered_questionnaires πρώτα
+    db.answered_questionnaires.delete_many({"questionnaire_id": {"$in": questionnaire_ids}})
+    
+    # Μετά διαγραφή των questionnaires
+    db.questionnaires.delete_many({"student_id": reg_number})
+
+    # Τέλος, διαγραφή του φοιτητή
+    db.students.delete_one({"reg_number": reg_number})
+
     flash("Ο φοιτητής διαγράφηκε!", "success")
     return redirect(url_for("admin.manage_students"))
